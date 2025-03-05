@@ -73,7 +73,7 @@ npm start
 Open your browser and navigate to http://localhost:3000 to access the application.
 
 ## Project Structure
-
+```bash
 assignment-project/
 ├── client/
 │   ├── public/
@@ -96,9 +96,10 @@ assignment-project/
 │   ├── .env
 │   ├── index.js
 │   ├── package.json
+```
 
 ## API Endpoints
-## User Routes
+### User Routes
 ```bash
 POST /auth/signup - User Signup
 POST /auth/login - User Login
