@@ -26,8 +26,8 @@ This is a full-stack web application that includes user authentication, password
 ### Clone the Repository
 
 ```bash
-[git clone [https://github.com/your-username/assignment-project.git](https://github.com/kartika-k/User_Authentication_System.git)]
-cd assignment-project
+git clone https://github.com/kartika-k/User_Authentication_System.git
+cd User_Authentication_System
 ```
 ## Install Dependencies
 
