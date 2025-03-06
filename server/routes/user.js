@@ -151,9 +151,5 @@ router.get('/logout', (req, res) => {
     return res.json({ status: true , message: "Logout successful" })
 })
 
-<<<<<<< HEAD:server/routes/user.js
 export { router as userRouter }
-=======
 
-export { router as userRouter }
->>>>>>> b1a72063b4d3bd1ec9e8862fe9ff18c83fcae8ee:server/routes/commit
