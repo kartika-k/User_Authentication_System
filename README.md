@@ -108,3 +108,17 @@ POST /auth/reset-password/:token - Reset Password
 GET /auth/verify - Verify User
 GET /auth/logout - Logout User
 ```
+## Screenshots
+
+![image](https://github.com/user-attachments/assets/af6cae30-f0e6-40df-85bd-efab6b261dec)
+
+![image](https://github.com/user-attachments/assets/cf5cd56d-d091-40ee-9171-2126f124a3be)
+
+![image](https://github.com/user-attachments/assets/757ab717-5a75-4840-8c6f-72d71e670d53)
+
+![image](https://github.com/user-attachments/assets/0ad313c9-b0ac-4520-8afc-aa4e4509b596)
+
+## DataBase
+
+<img width="803" alt="image" src="https://github.com/user-attachments/assets/b76b80b2-8b34-4881-a6bd-5ced8c0538cf" />
+

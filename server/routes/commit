@@ -63,8 +63,7 @@ router.post('/forgot-password', async (req, res) => {
         if (!user) {
             return res.json({ message: "User not registered" });
         }
-
-        const token = jwt.sign({ id: user._id }, process.env.KEY, { expiresIn: '5m' });
+          const token = jwt.sign({ id: user._id }, process.env.KEY, { expiresIn: '5m' });
 
         var transporter = nodemailer.createTransport({
             service: 'gmail',
@@ -115,6 +114,21 @@ router.post('/reset-password/:token', async (req, res) => {
     }
 });
 
+router.post('/reset-password/:token',async(req,res) => {
+    const {token} = req.params;
+    const {password} = req.body;
+
+    try{
+        const decoded = await jwt.verify(token,PromiseRejectionEvent.env.KEY);
+        const id = decoded.id;
+        const hashPassword = await bcrypt.hash(password,10);
+        await User.findByIdAndUpdate({_id:id},{password:hashPassword})
+        return res.json({status:true,message:"Password reset successfully"})
+    }catch(err){
+        return res.json("invalid token")
+    }
+})
+
 const verifyUser = async (req, res, next) => {
     try {
         const token = req.cookies.token;
@@ -137,4 +151,9 @@ router.get('/logout', (req, res) => {
     return res.json({ status: true , message: "Logout successful" })
 })
 
+<<<<<<< HEAD:server/routes/user.js
 export { router as userRouter }
+=======
+
+export { router as userRouter }
+>>>>>>> b1a72063b4d3bd1ec9e8862fe9ff18c83fcae8ee:server/routes/commit
