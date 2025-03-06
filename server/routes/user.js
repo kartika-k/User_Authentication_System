@@ -7,6 +7,15 @@ import nodemailer from 'nodemailer'
 
 router.post('/signup', async (req, res) => {
     const { username, email, password } = req.body;
+
+    if (!username || !email || !password) {
+        return res.json({ message: "Username, email, and password are required" });
+    }
+
+    if (password.length < 6) {
+        return res.json({ message: "Password must be at least 6 characters long" });
+    }
+
     const userByEmail = await User.findOne({ email });
     const userByUsername = await User.findOne({ username });
     if (userByEmail) {
@@ -15,7 +24,6 @@ router.post('/signup', async (req, res) => {
     if (userByUsername) {
         return res.json({ message: "User with this username already exists" });
     }
-
     const hashpassword = await bcrypt.hash(password, 10);
     const newUser = new User({
         username,
@@ -27,8 +35,14 @@ router.post('/signup', async (req, res) => {
     return res.json({ status: true, message: "User created successfully" });
 });
 
+
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
+
+    if (!email || !password) {
+        return res.json({ message: "Email and password are required" });
+    }
+
     const user = await User.findOne({ email });
     if (!user) {
         return res.json({ message: "User is not registered" });
@@ -60,11 +74,12 @@ router.post('/forgot-password', async (req, res) => {
             }
         });
 
+        const encodedToken = encodeURIComponent(token);
         var mailOptions = {
             from: 'k.kannojiya2003@gmail.com',
             to: email,
             subject: 'Reset Password',
-            text: `http://localhost:5173/resetPassword/${token}`
+            text: `http://localhost:5173/resetPassword/${encodedToken}`
         };
 
         transporter.sendMail(mailOptions, function (error, info) {
@@ -76,6 +91,27 @@ router.post('/forgot-password', async (req, res) => {
         });
     } catch (err) {
         console.log(err);
+        return res.json({ message: "An error occurred" });
+    }
+});
+
+router.post('/reset-password/:token', async (req, res) => {
+    const { token } = req.params;
+    const { password } = req.body;
+
+    if (!password || password.length < 6) {
+        return res.json({ message: "Password must be at least 6 characters long" });
+    }
+
+    try {
+        const decoded = await jwt.verify(token, process.env.KEY);
+        const id = decoded.id;
+        const hashPassword = await bcrypt.hash(password, 10);
+        await User.findByIdAndUpdate({ _id: id }, { password: hashPassword });
+        return res.json({ status: true, message: "Password reset successfully" });
+    } catch (err) {
+        console.log(err);
+        return res.json({ message: "Invalid token" });
     }
 });
 
@@ -93,13 +129,12 @@ const verifyUser = async (req, res, next) => {
 };
 
 router.get("/verify", verifyUser, (req, res) => {
-    return res.json({status: true, message: "authorized"})
+    return res.json({ status: true, message: "authorized" });
 });
 
-router.get('/logout',(req,res) => {
+router.get('/logout', (req, res) => {
     res.clearCookie('token')
-    return res.json({status: true})
+    return res.json({ status: true , message: "Logout successful" })
 })
-
 
 export { router as userRouter }
